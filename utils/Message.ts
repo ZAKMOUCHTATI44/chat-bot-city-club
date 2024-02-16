@@ -2,6 +2,7 @@ import axios from "axios";
 import { MessageRequest } from "../types/app";
 
 export function sendMessage(data: MessageRequest) {
+
   const config = {
     headers: {
       "Content-Type": "application/json",

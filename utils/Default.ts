@@ -1,6 +1,8 @@
 import { Lang } from "../types/app";
+import prisma from "../prisma/prisma";
 
-export function getMenu(lang: Lang) {
+export async function getMenu(lang: Lang) {
+  let rows = await getSteps(lang);
   let body = {
     fr: "Bonjour 👋😁, Merci d'avoir contacté City Club ! Veuillez sélectionner votre langue.",
     ar: "مرحبًا ، شكرًا على تواصلك مع سيتي كلوب ! الرجاء تحديد اللغة.",
@@ -12,7 +14,7 @@ export function getMenu(lang: Lang) {
       type: "list",
       header: {
         type: "text",
-        text: lang === Lang.AR ? "كارفور" : "Carrefour",
+        text: lang === Lang.AR ? "سيتي كلوب" : "City Club",
       },
       body: {
         text: lang === Lang.AR ? body.ar : body.fr,
@@ -26,7 +28,7 @@ export function getMenu(lang: Lang) {
           {
             title:
               lang === Lang.AR ? "حدد اختيارك" : "Sélectionner votre choix",
-            rows: lang === Lang.AR ? options.ar : options.fr,
+            rows,
           },
         ],
       },
@@ -88,45 +90,33 @@ const options = {
       description: "🏋️‍♂️ Comment puis-je m'inscrire à la salle de sport ?",
     },
     {
-      id: "option4",
+      id: "option3",
       title: " ",
       description: "🌐 s'abonner à nos pages ou visiter nos sites web",
     },
     {
-      id: "option5",
+      id: "option4",
       title: " ",
       description: "⚠️ Soumettre une réclamation",
     },
     {
-      id: "option6",
+      id: "option5",
       title: " ",
       description: "🕐 Quels sont vos horaires d'ouverture ?",
     },
     {
-      id: "option7",
-      title: " ",
-      description:
-        "💆‍♂️ Proposez-vous des services de massage ou de physiothérapie dans votre salle de sport ?",
-    },
-    {
-      id: "option8",
+      id: "option6",
       title: " ",
       description:
         "👫 Puis-je apporter un invité avec moi à la salle de sport ?",
     },
     {
-      id: "option9",
-      title: " ",
-      description:
-        "👵🧑‍🦽 Proposez-vous des programmes d'entraînement spécifiques pour les personnes âgées ou les personnes ayant des besoins spéciaux ?",
-    },
-    {
-      id: "option10",
+      id: "option7",
       title: " ",
       description: "❌ Comment puis-je annuler mon abonnement ?",
     },
     {
-      id: "option11",
+      id: "option8",
       title: " ",
       description: "🥗 Proposez-vous des programmes nutritionnels ?",
     },
@@ -143,46 +133,50 @@ const options = {
       description: "🏋️‍♂️ كيف يمكنني التسجيل في صالة الألعاب الرياضية؟",
     },
     {
-      id: "option4",
+      id: "option3",
       title: " ",
       description: "🌐 الاشتراك في صفحاتنا أو زيارة مواقعنا على الإنترنت",
     },
     {
-      id: "option5",
+      id: "option4",
       title: " ",
       description: "⚠️ تقديم شكوى",
     },
     {
-      id: "option6",
+      id: "option5",
       title: " ",
       description: "🕐 ما هي ساعات عملكم؟",
     },
     {
-      id: "option7",
-      title: " ",
-      description:
-        "💆‍♂️ هل تقدمون خدمات تدليك أو علاج طبيعي في صالة الألعاب الرياضية؟",
-    },
-    {
-      id: "option8",
+      id: "option6",
       title: " ",
       description: "👫 هل يمكنني إحضار ضيف معي إلى صالة الألعاب الرياضية؟",
     },
     {
-      id: "option9",
-      title: " ",
-      description:
-        "👵🧑‍🦽 هل تقدمون برامج تدريب خاصة لكبار السن أو لأولئك الذين لديهم احتياجات خاصة؟",
-    },
-    {
-      id: "option10",
+      id: "option7",
       title: " ",
       description: "❌ كيف يمكنني إلغاء اشتراكي؟",
     },
     {
-      id: "option11",
+      id: "option8",
       title: " ",
       description: "🥗 هل تقدمون برامج تغذية؟",
     },
   ],
 };
+
+export async function getSteps(lang: Lang): Promise<any> {
+  const options = await prisma.steps.findMany();
+
+  const rows = options.map((option) => {
+    const row = {
+      id: `option${option.id}`,
+      title: " ",
+      description: lang === Lang.AR ? option.textAr : option.textFr,
+    };
+
+    return row;
+  });
+
+  return rows;
+}

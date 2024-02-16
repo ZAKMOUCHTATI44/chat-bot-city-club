@@ -3,22 +3,22 @@ import { sendMessage } from "../utils/Message";
 import { Lang, MessageRequest } from "../types/app";
 import { getMenu, welcomeMessage } from "../utils/Default";
 import { createOrUpdateLead } from "./leadController";
+import { getResponse } from "../steps/Steps";
 
 export async function chatbot(req: Request, res: Response) {
   let message: MessageRequest = req.body;
-
-  console.log(message);
 
   switch (message.message_type) {
     case "reply":
       let { id, title, description } = message?.reply;
       if (id.includes("btn-lang-fr")) {
+        let custom = await getMenu(Lang.FR);
         sendMessage({
           channel: "whatsapp",
           from: message.to,
           to: message.from,
           message_type: "custom",
-          custom: getMenu(Lang.FR),
+          custom,
         });
 
         createOrUpdateLead({
@@ -27,17 +27,30 @@ export async function chatbot(req: Request, res: Response) {
           profileName: message.profile.name,
         });
       } else if (id.includes("btn-lang-ar")) {
+        let custom = await getMenu(Lang.AR);
         sendMessage({
           channel: "whatsapp",
           from: message.to,
           to: message.from,
           message_type: "custom",
-          custom: getMenu(Lang.AR),
+          custom,
         });
+
+       
         createOrUpdateLead({
           lang: Lang.AR,
           phone: message.from,
           profileName: message.profile.name,
+        });
+      } else if (id.includes("option")) {
+        let step = id.replace("option", "");
+        let text = await getResponse(Number(step), message.from);
+        sendMessage({
+          channel: "whatsapp",
+          from: message.to,
+          to: message.from,
+          message_type: "text",
+          text,
         });
       }
 
