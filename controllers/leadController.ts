@@ -8,17 +8,30 @@ export const createOrUpdateLead = async (data: {
   phone: string;
   profileName: string;
 }) => {
-  const lead = await prisma.lead.upsert({
+  let lead;
+  const leadExists = await prisma.lead.findFirst({
     where: {
       phone: data.phone,
     },
-    update: {
-      lang: data.lang,
-    },
-    create: {
-      profileName: data.profileName,
-      lang: data.lang,
-      phone: data.phone,
-    },
   });
+
+  if (leadExists) {
+    lead = await prisma.lead.update({
+      where: {
+        phone: data.phone,
+      },
+      data: {
+        lang: data.lang,
+        profileName: data.profileName,
+      },
+    });
+  } else {
+    lead = await prisma.lead.create({
+      data: {
+        phone: data.phone,
+        lang: data.lang,
+        profileName: data.profileName,
+      },
+    });
+  }
 };
