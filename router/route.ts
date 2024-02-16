@@ -1,9 +1,7 @@
 import express, { Request, Response } from "express";
 const router = express.Router();
-import { PrismaClient } from "@prisma/client";
-import { sendMessage } from "../utils/Message";
 import { chatbot } from "../controllers/chatBotController";
-
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 router.post("/chat-bot", chatbot);

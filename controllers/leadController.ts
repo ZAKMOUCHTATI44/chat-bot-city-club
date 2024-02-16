@@ -1,5 +1,6 @@
 import { Lead } from "@prisma/client";
-import prisma from "../prisma/prisma";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 import { Lang } from "../types/app";
 
 export const createOrUpdateLead = async (data: {
