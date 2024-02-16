@@ -13,7 +13,7 @@ export function sendMessage(data: MessageRequest) {
   axios
     .post("https://api.nexmo.com/v1/messages", data, config)
     .then((response) => {
-      console.log(response);
+      console.log(response.data);
     })
     .catch((error) => {
       console.error(error);

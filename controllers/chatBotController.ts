@@ -7,6 +7,8 @@ import { createOrUpdateLead } from "./leadController";
 export async function chatbot(req: Request, res: Response) {
   let message: MessageRequest = req.body;
 
+  console.log(message);
+
   switch (message.message_type) {
     case "reply":
       let { id, title, description } = message?.reply;
