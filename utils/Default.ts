@@ -1,4 +1,4 @@
-import { Lang } from "../types";
+import { Lang } from "../types/app";
 
 export function getMenu(lang: Lang) {
   let body = {

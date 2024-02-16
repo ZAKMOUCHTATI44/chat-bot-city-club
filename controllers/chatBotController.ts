@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { sendMessage } from "../utils/Message";
-import { Lang, MessageRequest } from "../types";
+import { Lang, MessageRequest } from "../types/app";
 import { getMenu, welcomeMessage } from "../utils/Default";
 import { createOrUpdateLead } from "./leadController";
 

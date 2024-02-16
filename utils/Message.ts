@@ -1,5 +1,5 @@
 import axios from "axios";
-import { MessageRequest } from "../types";
+import { MessageRequest } from "../types/app";
 
 export function sendMessage(data: MessageRequest) {
   const config = {
