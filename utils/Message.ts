@@ -1,8 +1,8 @@
 import axios from "axios";
 import { MessageRequest } from "../types/app";
+import { saveMessage } from "../controllers/messageController";
 
 export function sendMessage(data: MessageRequest) {
-
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -13,8 +13,14 @@ export function sendMessage(data: MessageRequest) {
 
   axios
     .post("https://api.nexmo.com/v1/messages", data, config)
-    .then((response) => {
-      console.log(response.data);
+    .then((res) => {
+      saveMessage({
+        body: data.text ?? "",
+        from: data.from,
+        to: data.to,
+        type: data.message_type,
+        messageId: res.data.message_uuid ?? "",
+      });
     })
     .catch((error) => {
       console.error(error);
