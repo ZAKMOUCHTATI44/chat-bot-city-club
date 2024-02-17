@@ -52,7 +52,7 @@ export async function chatbot(req: Request, res: Response) {
           text,
         });
 
-        if (!id.includes(["1", "5"])) {
+        if (!["1", "5"].includes(id)) {
           setTimeout(async () => {
             let custom = await buttonMenu(message.from);
             sendMessage({
@@ -66,6 +66,8 @@ export async function chatbot(req: Request, res: Response) {
         }
       } else if (id.includes("menu-default")) {
         const lang = await getLang(message.from);
+
+        console.log(lang)
         sendMessage({
           channel: "whatsapp",
           from: message.to,
