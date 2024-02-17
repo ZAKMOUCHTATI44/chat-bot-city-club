@@ -52,3 +52,17 @@ export async function clubsOptions(phone: string): Promise<any> {
 
   return custom;
 }
+
+export async function getClub(name: string) {
+  let custom = {
+    type: "location",
+    location: {
+      longitude: -7.6287252,
+      latitude: 33.5709079,
+      name: name,
+      address: "250 Bd Abdelmoumen, Casablanca 20000",
+    },
+  };
+
+  return custom
+}

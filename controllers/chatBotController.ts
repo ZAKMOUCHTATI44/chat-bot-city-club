@@ -5,7 +5,7 @@ import { buttonMenu, getMenu, welcomeMessage } from "../utils/Default";
 import { createOrUpdateLead, getLang } from "./leadController";
 import { getResponse } from "../steps/Steps";
 import { getMessage, saveMessage } from "./messageController";
-import { clubsOptions } from "./clubsController";
+import { clubsOptions, getClub } from "./clubsController";
 
 export async function chatbot(req: Request, res: Response) {
   let message: MessageRequest = req.body;
@@ -80,6 +80,24 @@ export async function chatbot(req: Request, res: Response) {
             phone: message.from,
             profileName: message.profile.name,
           });
+        } else if (id.includes("location")) {
+          sendMessage({
+            channel: "whatsapp",
+            from: message.to,
+            to: message.from,
+            message_type: "custom",
+            custom: getClub(description),
+          });
+          setTimeout(async () => {
+            let custom = await buttonMenu(message.from);
+            sendMessage({
+              channel: "whatsapp",
+              from: message.to,
+              to: message.from,
+              message_type: "custom",
+              custom,
+            });
+          }, 5000);
         } else if (id.includes("option")) {
           step = id.replace("option", "");
           let text = await getResponse(Number(step), message.from);
