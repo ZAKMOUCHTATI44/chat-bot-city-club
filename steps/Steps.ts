@@ -16,9 +16,9 @@ export async function getResponse(
 
   if (currentStep !== null) {
     if (lang === Lang.AR) {
-      return currentStep.textAr;
+      return currentStep.descriptionAr;
     } else {
-      return currentStep.textFr;
+      return currentStep.descriptionFr;
     }
   }
 
