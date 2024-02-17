@@ -52,7 +52,7 @@ export async function chatbot(req: Request, res: Response) {
           text,
         });
 
-        if (["1", "5"].includes(step)) {
+        if (!["1", "5", "4"].includes(step)) {
           setTimeout(async () => {
             let custom = await buttonMenu(message.from);
             sendMessage({
