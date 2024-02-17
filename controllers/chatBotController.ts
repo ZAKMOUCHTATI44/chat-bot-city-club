@@ -4,9 +4,14 @@ import { Lang, MessageRequest } from "../types/app";
 import { buttonMenu, getMenu, welcomeMessage } from "../utils/Default";
 import { createOrUpdateLead, getLang } from "./leadController";
 import { getResponse } from "../steps/Steps";
+import { getMessage, saveMessage } from "./messageController";
 
 export async function chatbot(req: Request, res: Response) {
   let message: MessageRequest = req.body;
+
+  const lastMessage = await getMessage(message.from);
+
+  if (lastMessage) console.log(lastMessage);
 
   switch (message.message_type) {
     case "reply":
@@ -90,5 +95,13 @@ export async function chatbot(req: Request, res: Response) {
       });
       break;
   }
+
+  saveMessage({
+    body: message.text ?? "",
+    from: message.from,
+    to: message.to,
+    type: message.message_type,
+    messageId: message.message_uuid ?? "",
+  });
   res.status(200).end();
 }

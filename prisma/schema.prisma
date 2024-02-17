@@ -40,8 +40,8 @@ model Message {
   from      String
   type      String
   body      String
-  latitude  Float
-  longitude Float
+  latitude  Float?
+  longitude Float?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
