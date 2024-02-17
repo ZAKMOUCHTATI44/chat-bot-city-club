@@ -7,6 +7,7 @@ interface MessageRequest {
   from: string;
   type: "text" | "custom" | "unsupported" | "reply";
   body: string;
+  step?: number;
   latitude?: number | null;
   longitude?: number | null;
 }
@@ -17,6 +18,7 @@ export async function saveMessage(data: MessageRequest): Promise<Message> {
       type: data.type,
       from: data.from,
       to: data.to,
+      step: data.step,
       messageId: data.messageId,
       latitude: data.latitude,
       longitude: data.longitude,
@@ -28,7 +30,7 @@ export async function saveMessage(data: MessageRequest): Promise<Message> {
 export async function getMessage(phone: string): Promise<Message | null> {
   const message = await prisma.message.findFirst({
     where: {
-      from: phone,
+      to: phone,
     },
     orderBy: {
       id: "desc",

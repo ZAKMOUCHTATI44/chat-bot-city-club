@@ -2,7 +2,7 @@ import axios from "axios";
 import { MessageRequest } from "../types/app";
 import { saveMessage } from "../controllers/messageController";
 
-export function sendMessage(data: MessageRequest) {
+export function sendMessage(data: MessageRequest, step?: number) {
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -18,6 +18,7 @@ export function sendMessage(data: MessageRequest) {
         body: data.text ?? "",
         from: data.from,
         to: data.to,
+        step: step,
         type: data.message_type,
         messageId: res.data.message_uuid ?? "",
       });

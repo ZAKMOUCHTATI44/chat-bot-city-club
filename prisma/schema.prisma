@@ -40,6 +40,7 @@ model Message {
   from      String
   type      String
   body      String
+  step      Int?
   latitude  Float?
   longitude Float?
   createdAt DateTime @default(now())

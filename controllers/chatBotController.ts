@@ -8,6 +8,7 @@ import { getMessage, saveMessage } from "./messageController";
 
 export async function chatbot(req: Request, res: Response) {
   let message: MessageRequest = req.body;
+  let step: string = "";
 
   const lastMessage = await getMessage(message.from);
 
@@ -47,7 +48,7 @@ export async function chatbot(req: Request, res: Response) {
           profileName: message.profile.name,
         });
       } else if (id.includes("option")) {
-        let step = id.replace("option", "");
+        step = id.replace("option", "");
         let text = await getResponse(Number(step), message.from);
         sendMessage({
           channel: "whatsapp",
@@ -101,6 +102,7 @@ export async function chatbot(req: Request, res: Response) {
     from: message.from,
     to: message.to,
     type: message.message_type,
+    step: Number(step),
     messageId: message.message_uuid ?? "",
   });
   res.status(200).end();
