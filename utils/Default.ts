@@ -166,7 +166,7 @@ const options = {
 };
 
 export async function getSteps(lang: Lang): Promise<any> {
-  const options = await prisma.steps.findMany();
+  const options = await prisma.step.findMany();
 
   const rows = options.map((option) => {
     const row = {

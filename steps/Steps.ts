@@ -8,7 +8,7 @@ export async function getResponse(
 ): Promise<string> {
   const lang = await getLang(phone);
 
-  const currentStep = await prisma.steps.findFirst({
+  const currentStep = await prisma.step.findFirst({
     where: {
       id: step,
     },
