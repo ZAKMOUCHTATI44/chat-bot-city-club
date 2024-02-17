@@ -81,12 +81,14 @@ export async function chatbot(req: Request, res: Response) {
             profileName: message.profile.name,
           });
         } else if (id.includes("location")) {
+          console.log("location")
+          console.log(getClub(description))
           sendMessage({
             channel: "whatsapp",
             from: message.to,
             to: message.from,
             message_type: "custom",
-            custom: getClub(description),
+            custom: await getClub(description),
           });
           setTimeout(async () => {
             let custom = await buttonMenu(message.from);

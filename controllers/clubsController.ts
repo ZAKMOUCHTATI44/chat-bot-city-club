@@ -53,7 +53,7 @@ export async function clubsOptions(phone: string): Promise<any> {
   return custom;
 }
 
-export async function getClub(name: string) {
+export async function getClub(name: string) : Promise<any> {
   let custom = {
     type: "location",
     location: {
