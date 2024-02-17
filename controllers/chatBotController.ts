@@ -52,16 +52,18 @@ export async function chatbot(req: Request, res: Response) {
           text,
         });
 
-        setTimeout(async () => {
-          let custom = await buttonMenu(message.from);
-          sendMessage({
-            channel: "whatsapp",
-            from: message.to,
-            to: message.from,
-            message_type: "custom",
-            custom,
-          });
-        }, 5000);
+        if (!id.includes(["1", "5"])) {
+          setTimeout(async () => {
+            let custom = await buttonMenu(message.from);
+            sendMessage({
+              channel: "whatsapp",
+              from: message.to,
+              to: message.from,
+              message_type: "custom",
+              custom,
+            });
+          }, 5000);
+        }
       } else if (id.includes("menu-default")) {
         const lang = await getLang(message.from);
         sendMessage({
@@ -69,7 +71,7 @@ export async function chatbot(req: Request, res: Response) {
           from: message.to,
           to: message.from,
           message_type: "custom",
-          custom: getMenu(lang),
+          custom: getMenu(Lang.FR),
         });
       }
 
