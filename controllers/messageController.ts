@@ -5,7 +5,7 @@ interface MessageRequest {
   messageId: string;
   to: string;
   from: string;
-  type: "text" | "custom" | "unsupported" | "reply";
+  type: "text" | "custom" | "unsupported" | "reply" | "location";
   body: string;
   step?: number;
   latitude?: number | null;

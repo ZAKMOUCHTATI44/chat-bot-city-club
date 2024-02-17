@@ -5,10 +5,13 @@ import { buttonMenu, getMenu, welcomeMessage } from "../utils/Default";
 import { createOrUpdateLead, getLang } from "./leadController";
 import { getResponse } from "../steps/Steps";
 import { getMessage, saveMessage } from "./messageController";
+import { clubsOptions } from "./clubsController";
 
 export async function chatbot(req: Request, res: Response) {
   let message: MessageRequest = req.body;
   let step: string = "";
+
+  console.log(message);
 
   const lastMessage = await getMessage(message.from);
 
@@ -24,8 +27,27 @@ export async function chatbot(req: Request, res: Response) {
           ? "شكرًا لاتصالك بنا، سيتم تعيين مستشار هاتفي لمعالجة شكواك في أقرب وقت ممكن."
           : "Merci de nous avoir contacté, un téléconseiller prendra en charge votre réclamation dans les plus brefs délais.",
     });
+    setTimeout(async () => {
+      let custom = await buttonMenu(message.from);
+      sendMessage({
+        channel: "whatsapp",
+        from: message.to,
+        to: message.from,
+        message_type: "custom",
+        custom,
+      });
+    }, 5000);
   } else {
     switch (message.message_type) {
+      case "location":
+        sendMessage({
+          channel: "whatsapp",
+          from: message.to,
+          to: message.from,
+          message_type: "custom",
+          custom: await clubsOptions(message.from),
+        });
+        break;
       case "reply":
         let { id, title, description } = message?.reply;
         if (id.includes("btn-lang-fr")) {
