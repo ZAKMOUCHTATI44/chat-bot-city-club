@@ -1,5 +1,6 @@
 import { Lang } from "../types/app";
 import prisma from "../prisma/prisma";
+import { getLang } from "../controllers/leadController";
 
 export async function getMenu(lang: Lang) {
   let rows = await getSteps(lang);
@@ -77,94 +78,6 @@ export function welcomeMessage() {
   return custom;
 }
 
-const options = {
-  fr: [
-    {
-      id: "option1",
-      title: " ",
-      description: "📍 City Club autour de moi",
-    },
-    {
-      id: "option2",
-      title: " ",
-      description: "🏋️‍♂️ Comment puis-je m'inscrire à la salle de sport ?",
-    },
-    {
-      id: "option3",
-      title: " ",
-      description: "🌐 s'abonner à nos pages ou visiter nos sites web",
-    },
-    {
-      id: "option4",
-      title: " ",
-      description: "⚠️ Soumettre une réclamation",
-    },
-    {
-      id: "option5",
-      title: " ",
-      description: "🕐 Quels sont vos horaires d'ouverture ?",
-    },
-    {
-      id: "option6",
-      title: " ",
-      description:
-        "👫 Puis-je apporter un invité avec moi à la salle de sport ?",
-    },
-    {
-      id: "option7",
-      title: " ",
-      description: "❌ Comment puis-je annuler mon abonnement ?",
-    },
-    {
-      id: "option8",
-      title: " ",
-      description: "🥗 Proposez-vous des programmes nutritionnels ?",
-    },
-  ],
-  ar: [
-    {
-      id: "option1",
-      title: " ",
-      description: "📍 النادي الرياضي القريب مني",
-    },
-    {
-      id: "option2",
-      title: " ",
-      description: "🏋️‍♂️ كيف يمكنني التسجيل في صالة الألعاب الرياضية؟",
-    },
-    {
-      id: "option3",
-      title: " ",
-      description: "🌐 الاشتراك في صفحاتنا أو زيارة مواقعنا على الإنترنت",
-    },
-    {
-      id: "option4",
-      title: " ",
-      description: "⚠️ تقديم شكوى",
-    },
-    {
-      id: "option5",
-      title: " ",
-      description: "🕐 ما هي ساعات عملكم؟",
-    },
-    {
-      id: "option6",
-      title: " ",
-      description: "👫 هل يمكنني إحضار ضيف معي إلى صالة الألعاب الرياضية؟",
-    },
-    {
-      id: "option7",
-      title: " ",
-      description: "❌ كيف يمكنني إلغاء اشتراكي؟",
-    },
-    {
-      id: "option8",
-      title: " ",
-      description: "🥗 هل تقدمون برامج تغذية؟",
-    },
-  ],
-};
-
 export async function getSteps(lang: Lang): Promise<any> {
   const options = await prisma.step.findMany();
 
@@ -180,3 +93,33 @@ export async function getSteps(lang: Lang): Promise<any> {
 
   return rows;
 }
+
+export const buttonMenu = async (phone: string) => {
+  const lang = await getLang(phone);
+
+  let custom = {
+    type: "interactive",
+    interactive: {
+      type: "button",
+      body: {
+        text:
+          lang === Lang.AR
+            ? "للعودة إلى القائمة، انقر أدناه"
+            : "Veuillez appuyer ci-dessous pour revenir au menu principal !",
+      },
+      action: {
+        buttons: [
+          {
+            type: "reply",
+            reply: {
+              id: "menu-default",
+              title: lang === Lang.AR ? "القائمة" : "Menu",
+            },
+          },
+        ],
+      },
+    },
+  };
+
+  return custom;
+};

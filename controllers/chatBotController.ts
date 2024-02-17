@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { sendMessage } from "../utils/Message";
 import { Lang, MessageRequest } from "../types/app";
-import { getMenu, welcomeMessage } from "../utils/Default";
-import { createOrUpdateLead } from "./leadController";
+import { buttonMenu, getMenu, welcomeMessage } from "../utils/Default";
+import { createOrUpdateLead, getLang } from "./leadController";
 import { getResponse } from "../steps/Steps";
 
 export async function chatbot(req: Request, res: Response) {
@@ -36,7 +36,6 @@ export async function chatbot(req: Request, res: Response) {
           custom,
         });
 
-       
         createOrUpdateLead({
           lang: Lang.AR,
           phone: message.from,
@@ -51,6 +50,26 @@ export async function chatbot(req: Request, res: Response) {
           to: message.from,
           message_type: "text",
           text,
+        });
+
+        setTimeout(async () => {
+          let custom = await buttonMenu(message.from);
+          sendMessage({
+            channel: "whatsapp",
+            from: message.to,
+            to: message.from,
+            message_type: "custom",
+            custom,
+          });
+        }, 5000);
+      } else if (id.includes("menu-default")) {
+        const lang = await getLang(message.from);
+        sendMessage({
+          channel: "whatsapp",
+          from: message.to,
+          to: message.from,
+          message_type: "custom",
+          custom: getMenu(lang),
         });
       }
 
