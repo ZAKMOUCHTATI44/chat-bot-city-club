@@ -67,13 +67,13 @@ export async function chatbot(req: Request, res: Response) {
       } else if (id.includes("menu-default")) {
         const lang = await getLang(message.from);
 
-        console.log(lang)
+        let custom = await getMenu(lang);
         sendMessage({
           channel: "whatsapp",
           from: message.to,
           to: message.from,
           message_type: "custom",
-          custom: getMenu(Lang.FR),
+          custom,
         });
       }
 
