@@ -30,7 +30,7 @@ export async function saveMessage(data: MessageRequest): Promise<Message> {
 export async function getMessage(phone: string): Promise<Message | null> {
   const message = await prisma.message.findFirst({
     where: {
-      to: phone,
+      from: phone,
     },
     orderBy: {
       id: "desc",
