@@ -48,10 +48,10 @@ model Message {
 
 model Steps {
   id            Int      @id @default(autoincrement())
-  descriptionFr String
-  descriptionAr String
-  textAr        String   @db.LongText
-  textFr        String   @db.LongText
+  descriptionFr String   @db.LongText
+  descriptionAr String   @db.LongText
+  textAr        String
+  textFr        String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
