@@ -5,8 +5,8 @@ import { getLang } from "../controllers/leadController";
 export async function getMenu(lang: Lang) {
   let rows = await getSteps(lang);
   let body = {
-    fr: "Bonjour 👋😁, Merci d'avoir contacté City Club ! Veuillez sélectionner votre langue.",
-    ar: "مرحبًا ، شكرًا على تواصلك مع سيتي كلوب ! الرجاء تحديد اللغة.",
+    fr: "Veuillez appuyer sur options pour choisir l’un de nos services",
+    ar: "يرجى الضغط على الخيارات لاختيار أحد خدماتنا",
   };
 
   let custom = {
