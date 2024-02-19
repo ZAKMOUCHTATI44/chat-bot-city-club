@@ -39,7 +39,7 @@ model Message {
   to        String
   from      String
   type      String
-  body      String
+  body      String   @db.LongText
   step      Int?
   latitude  Float?
   longitude Float?
